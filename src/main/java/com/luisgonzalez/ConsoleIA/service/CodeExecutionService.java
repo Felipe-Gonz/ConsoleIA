@@ -10,9 +10,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class CodeExecutionService {
+
+    private static final long COMPILE_TIMEOUT_SECONDS = 5;
+    private static final long RUN_TIMEOUT_SECONDS = 3;
 
     public RunCodeResponse executeCode(RunCodeRequest runCodeRequest){
         Path tempDir = null;
@@ -45,10 +49,16 @@ public class CodeExecutionService {
 
         Process compileProcess = compilerBuilder.start();
 
-        int compileExitCode = compileProcess.waitFor();
+        boolean finished = compileProcess.waitFor(COMPILE_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+        if (!finished){
+            compileProcess.destroyForcibly();
+            return new RunCodeResponse("","Compilation time limit exceeded","COMPILATION_TIMEOUT", -1);
+        }
 
         String compileOutput = readStream(compileProcess.getInputStream());
         String compileError = readStream(compileProcess.getErrorStream());
+        int compileExitCode = compileProcess.exitValue();
 
         if(compileExitCode != 0){
             return new RunCodeResponse(compileOutput, compileError, "COMPILATION ERROR", compileExitCode);
@@ -74,10 +84,21 @@ public class CodeExecutionService {
             runProcess.getOutputStream().close();
         }
 
-        int runExitCode = runProcess.waitFor();
+        boolean finished = runProcess.waitFor(RUN_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+        if (!finished) {
+            runProcess.destroyForcibly();
+            return new RunCodeResponse(
+                    "",
+                    "Execution time limit exceeded",
+                    "TIMEOUT",
+                    -1
+            );
+        }
 
         String runOutput = readStream(runProcess.getInputStream());
         String runError = readStream(runProcess.getErrorStream());
+        int runExitCode = runProcess.exitValue();
 
         return new RunCodeResponse(runOutput, runError, runExitCode == 0 ? "SUCESS":"RUNTIME ERROR", runExitCode);
     }
