@@ -5,14 +5,16 @@ public class RunCodeResponse {
     private String output;
     private String error;
     private String status;
+    private Integer exitCode;
 
     public RunCodeResponse() {
     }
 
-    public RunCodeResponse(String output, String error, String status) {
+    public RunCodeResponse(String output, String error, String status, Integer exitCode) {
         this.output = output;
         this.error = error;
         this.status = status;
+        this.exitCode = exitCode;
     }
 
     public String getOutput() {
@@ -37,5 +39,13 @@ public class RunCodeResponse {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getExitCode() {
+        return exitCode;
+    }
+
+    public void setExitCode(Integer exitCode) {
+        this.exitCode = exitCode;
     }
 }
