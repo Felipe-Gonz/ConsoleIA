@@ -1,11 +1,15 @@
-package com.luisgonzalez.ConsoleIA.dto;
+package com.luisgonzalez.ConsoleIA.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public class RunCodeRequest {
 
     @NotBlank(message = "El codigo no puede estar vacio")
+    @Size(max = 10000, message = "El codigo excede el tamaño maximo permitido")
     private String code;
+
+    @Size(max = 10000, message = "El input excede el tamaño maximo permitido")
     private String input;
 
     public RunCodeRequest(){

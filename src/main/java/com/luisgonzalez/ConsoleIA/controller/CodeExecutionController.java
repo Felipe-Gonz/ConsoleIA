@@ -1,7 +1,7 @@
 package com.luisgonzalez.ConsoleIA.controller;
 
-import com.luisgonzalez.ConsoleIA.dto.RunCodeRequest;
-import com.luisgonzalez.ConsoleIA.dto.RunCodeResponse;
+import com.luisgonzalez.ConsoleIA.dto.request.RunCodeRequest;
+import com.luisgonzalez.ConsoleIA.dto.response.RunCodeResponse;
 import com.luisgonzalez.ConsoleIA.service.CodeExecutionService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

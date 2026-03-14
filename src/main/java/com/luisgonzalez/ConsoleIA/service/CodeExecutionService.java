@@ -1,19 +1,13 @@
 package com.luisgonzalez.ConsoleIA.service;
 
 import com.luisgonzalez.ConsoleIA.dto.ProcessExecutionResult;
-import com.luisgonzalez.ConsoleIA.dto.RunCodeRequest;
-import com.luisgonzalez.ConsoleIA.dto.RunCodeResponse;
+import com.luisgonzalez.ConsoleIA.dto.request.RunCodeRequest;
+import com.luisgonzalez.ConsoleIA.dto.response.RunCodeResponse;
 import com.luisgonzalez.ConsoleIA.util.FileManagerUtil;
 import com.luisgonzalez.ConsoleIA.util.ProcessExecutorUtil;
-import org.springframework.context.annotation.ScopeMetadata;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class CodeExecutionService {
